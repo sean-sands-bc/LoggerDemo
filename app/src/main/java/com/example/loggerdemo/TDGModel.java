@@ -9,6 +9,7 @@ import android.os.MemoryFile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,15 +20,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Queue;
 
-public class LoggerModel {
+public class TDGModel {
+    private class PressEvent{
+        private char press;
+        private long timestamp;
+
+        public PressEvent(char p, long t){
+            press = p;
+            timestamp = t;
+        }
+
+        public char getPress(){
+            return press;
+        }
+
+        public long getTimestamp() {
+            return timestamp;
+        }
+    }
+
     private SensorManager mSensorManager;
     private Sensor mGyro;
     private MemoryFile mem;
     private SensorDirectChannel mSDC;
     private File file;
+    private Queue<PressEvent> peQ;
 
-    public LoggerModel(SensorManager sm, File f) throws IOException {
+    public TDGModel(SensorManager sm, File f) throws IOException {
         mSensorManager = sm;
         file = f;
         mGyro = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -35,7 +56,10 @@ public class LoggerModel {
         mem = new MemoryFile(null, 1048575);
 
         mSDC = sm.createDirectChannel(mem);
+    }
 
+    public void input(char pressed, long timestamp){
+        peQ.add(new PressEvent(pressed,timestamp));
     }
 
     public void setLogging(boolean b) throws IOException {
@@ -56,6 +80,14 @@ public class LoggerModel {
             int length;
             while ((length = is.read(buf)) > 0) {
                 fos.write(buf, 0, length);
+            }
+
+            DataOutputStream dos = new DataOutputStream(fos);
+            while(!peQ.isEmpty()){
+                PressEvent pe = peQ.remove();
+                dos.writeChar(pe.getPress());
+                dos.writeLong(pe.getTimestamp());
+
             }
 
 

@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-    private LoggerModel logMod;
+    private TDGModel tdgMod;
     private ToggleButton tbLogMode;
     //File f;
 
@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        File f = new File(getExternalFilesDir(null), "loggerdemo.txt");
+        File f = new File(getExternalFilesDir(null), "tdgdemo.txt");
         try {
-            logMod = new LoggerModel((SensorManager) getSystemService(SENSOR_SERVICE), f);
+            tdgMod = new TDGModel((SensorManager) getSystemService(SENSOR_SERVICE), f);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                  //Intent i =
 
                  try {
-                     logMod.setLogging(isChecked);
+                     tdgMod.setLogging(isChecked);
                  } catch (IOException e) {
                      e.printStackTrace();
                  }
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        logMod.close();
+        tdgMod.close();
         super.onDestroy();
     }
 }
