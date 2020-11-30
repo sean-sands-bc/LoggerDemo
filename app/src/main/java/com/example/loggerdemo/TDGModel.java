@@ -1,25 +1,15 @@
 package com.example.loggerdemo;
 
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorDirectChannel;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.MemoryFile;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Queue;
 
 public class TDGModel {
@@ -45,12 +35,14 @@ public class TDGModel {
     private Sensor mGyro;
     private MemoryFile mem;
     private SensorDirectChannel mSDC;
-    private File file;
+    private File sensorFile;
+    private File inputFile;
     private Queue<PressEvent> peQ;
 
-    public TDGModel(SensorManager sm, File f) throws IOException {
+    public TDGModel(SensorManager sm, File senf, File inpf) throws IOException {
         mSensorManager = sm;
-        file = f;
+        sensorFile = senf;
+        inputFile = inpf;
         mGyro = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         mem = new MemoryFile(null, 1048575);
@@ -74,21 +66,24 @@ public class TDGModel {
             mSDC.configure(mGyro,SensorDirectChannel.RATE_STOP);
             InputStream is = mem.getInputStream();
             //Path path;
-            FileOutputStream fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(sensorFile);
 
             byte[] buf = new byte[8192];
             int length;
             while ((length = is.read(buf)) > 0) {
                 fos.write(buf, 0, length);
             }
-
-            DataOutputStream dos = new DataOutputStream(fos);
+            fos.close();
+            FileOutputStream fos2 = new FileOutputStream(sensorFile);
+            DataOutputStream dos2 = new DataOutputStream(fos2);
             while(!peQ.isEmpty()){
                 PressEvent pe = peQ.remove();
-                dos.writeChar(pe.getPress());
-                dos.writeLong(pe.getTimestamp());
+                dos2.writeChar(pe.getPress());
+                dos2.writeLong(pe.getTimestamp());
 
             }
+            dos2.close();
+            fos2.close();
 
 
 

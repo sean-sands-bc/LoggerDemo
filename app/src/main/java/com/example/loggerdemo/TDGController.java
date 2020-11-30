@@ -2,7 +2,6 @@ package com.example.loggerdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -11,7 +10,7 @@ import android.widget.ToggleButton;
 import java.io.File;
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class TDGController extends AppCompatActivity {
     private TDGModel tdgMod;
     private ToggleButton tbLogMode;
     //File f;
@@ -19,10 +18,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        File f = new File(getExternalFilesDir(null), "tdgdemo.txt");
+        setContentView(R.layout.TDGView);
+        File senf = new File(getExternalFilesDir(null), "tdgsen.txt");
+        File inpf = new File(getExternalFilesDir(null), "tdginp.txt");
         try {
-            tdgMod = new TDGModel((SensorManager) getSystemService(SENSOR_SERVICE), f);
+            tdgMod = new TDGModel((SensorManager) getSystemService(SENSOR_SERVICE), senf, inpf);
         } catch (IOException e) {
             e.printStackTrace();
         }
