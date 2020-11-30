@@ -27,7 +27,7 @@ public class TDGController extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
+/*
         tbLogMode = (ToggleButton)findViewById(R.id.tbLogMode);
         tbLogMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
              @Override
@@ -39,15 +39,15 @@ public class TDGController extends AppCompatActivity {
                  } catch (IOException e) {
                      e.printStackTrace();
                  }
-                 /*
+
                  if(i!=null){
                      startActivity(i);
                  }
-                 */
+
              }
          }
 
-        );
+        );*/
     }
 
     @Override
