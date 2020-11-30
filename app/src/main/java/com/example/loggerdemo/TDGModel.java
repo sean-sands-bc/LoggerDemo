@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class TDGModel {
@@ -48,6 +49,8 @@ public class TDGModel {
         mem = new MemoryFile(null, 1048575);
 
         mSDC = sm.createDirectChannel(mem);
+        peQ  = new LinkedList<PressEvent>();
+
     }
 
     public void input(char pressed, long timestamp){

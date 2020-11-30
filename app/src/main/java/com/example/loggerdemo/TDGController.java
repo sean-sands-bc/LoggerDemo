@@ -4,21 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.widget.CompoundButton;
-import android.widget.ToggleButton;
+import android.os.SystemClock;
+import android.view.View;
+import android.widget.Button;
+//import android.widget.CompoundButton;
+//import android.widget.ToggleButton;
 
 import java.io.File;
 import java.io.IOException;
 
 public class TDGController extends AppCompatActivity {
     private TDGModel tdgMod;
-    private ToggleButton tbLogMode;
+    //private ToggleButton tbLogMode;
     //File f;
+    private Button btnInput1;
+    private Button btnInput2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.TDGView);
+
         File senf = new File(getExternalFilesDir(null), "tdgsen.txt");
         File inpf = new File(getExternalFilesDir(null), "tdginp.txt");
         try {
@@ -26,7 +31,35 @@ public class TDGController extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setContentView(R.layout.tdg_view);
+        btnInput1 = (Button)findViewById(R.id.input1);
+        btnInput2 = (Button)findViewById(R.id.input2);
 
+        btnInput1.setOnClickListener(new View.OnClickListener(){
+
+             @Override
+             public void onClick(View v) {
+                 tdgMod.input('1', SystemClock.elapsedRealtimeNanos());
+             }
+         }
+
+        );
+
+        btnInput2.setOnClickListener(new View.OnClickListener(){
+
+                                         @Override
+                                         public void onClick(View v) {
+                                             tdgMod.input('2', SystemClock.elapsedRealtimeNanos());
+                                         }
+                                     }
+
+        );
+
+        try {
+            tdgMod.setLogging(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 /*
         tbLogMode = (ToggleButton)findViewById(R.id.tbLogMode);
         tbLogMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -52,7 +85,14 @@ public class TDGController extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        try {
+            tdgMod.setLogging(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         tdgMod.close();
         super.onDestroy();
     }
+
+
 }
