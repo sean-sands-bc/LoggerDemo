@@ -77,7 +77,7 @@ public class TDGModel {
                 fos.write(buf, 0, length);
             }
             fos.close();
-            FileOutputStream fos2 = new FileOutputStream(sensorFile);
+            FileOutputStream fos2 = new FileOutputStream(inputFile);
             DataOutputStream dos2 = new DataOutputStream(fos2);
             while(!peQ.isEmpty()){
                 PressEvent pe = peQ.remove();
