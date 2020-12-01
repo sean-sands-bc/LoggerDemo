@@ -36,8 +36,8 @@ public class TDGModel {
 
     private SensorManager mSensorManager;
     private Sensor mGyro;
-    private MemoryFile mem;
-    private SensorDirectChannel mSDC;
+    //private MemoryFile mem;
+    //private SensorDirectChannel mSDC;
     private File sensorFile;
     private File inputFile;
     private Queue<PressEvent> peQ;
@@ -48,9 +48,9 @@ public class TDGModel {
         inputFile = inpf;
         mGyro = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
-        mem = new MemoryFile(null, 1048575);
+        //mem = new MemoryFile(null, 1048575);
 
-        mSDC = sm.createDirectChannel(mem);
+        //mSDC = sm.createDirectChannel(mem);
         peQ  = new LinkedList<PressEvent>();
 
     }
@@ -62,14 +62,21 @@ public class TDGModel {
     public void setLogging(boolean b) throws IOException {
         if(b)
         {
-            mSDC.configure(mGyro,SensorDirectChannel.RATE_NORMAL);
+            //mSDC.configure(mGyro,SensorDirectChannel.RATE_NORMAL);
             System.out.println("on");
             //return null;
         }
         else
         {
-            mSDC.configure(mGyro,SensorDirectChannel.RATE_STOP);
-            InputStream is = mem.getInputStream();
+            //mSDC.configure(mGyro,SensorDirectChannel.RATE_STOP);
+            //InputStream is = mem.getInputStream();
+            //dummy inputstream
+            InputStream is = new InputStream() {
+                @Override
+                public int read() throws IOException {
+                    return 0;
+                }
+            };
             //Path path;
             FileOutputStream fos = new FileOutputStream(sensorFile);
 
@@ -127,6 +134,6 @@ public class TDGModel {
     }
 
     public void close(){
-        mSDC.close();
+        //mSDC.close();
     }
 }
