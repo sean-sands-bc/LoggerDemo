@@ -2,7 +2,6 @@ package com.example.loggerdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -19,7 +18,7 @@ public class LoggerController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.logger_view);
         File f = new File(getExternalFilesDir(null), "loggerdemo.txt");
         try {
             logMod = new LoggerModel((SensorManager) getSystemService(SENSOR_SERVICE), f);
