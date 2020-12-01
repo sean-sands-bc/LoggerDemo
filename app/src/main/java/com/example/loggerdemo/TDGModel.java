@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -78,14 +80,24 @@ public class TDGModel {
             }
             fos.close();
             FileOutputStream fos2 = new FileOutputStream(inputFile);
-            DataOutputStream dos2 = new DataOutputStream(fos2);
+            //DataOutputStream dos2 = new DataOutputStream(fos2);
+            ByteBuffer bb2 = ByteBuffer.allocate(10);
+            bb2.order(ByteOrder.LITTLE_ENDIAN);
+            bb2.clear();
             while(!peQ.isEmpty()){
                 PressEvent pe = peQ.remove();
-                dos2.writeChar(pe.getPress());
-                dos2.writeLong(pe.getTimestamp());
+                //dos2.writeChar(pe.getPress());
+                //dos2.writeLong(pe.getTimestamp());
+                bb2.putLong(pe.getTimestamp());
+                bb2.putChar(pe.getPress());
+
+                fos2.write(bb2.array());
+                bb2.clear();
+                        
+
 
             }
-            dos2.close();
+            //dos2.close();
             fos2.close();
 
 
