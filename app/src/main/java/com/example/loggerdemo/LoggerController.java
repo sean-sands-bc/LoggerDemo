@@ -11,7 +11,7 @@ import android.widget.ToggleButton;
 import java.io.File;
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class LoggerController extends AppCompatActivity {
     private LoggerModel logMod;
     private ToggleButton tbLogMode;
     //File f;
