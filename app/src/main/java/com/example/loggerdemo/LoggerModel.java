@@ -23,8 +23,8 @@ import java.nio.file.Paths;
 public class LoggerModel {
     private SensorManager mSensorManager;
     private Sensor mGyro;
-    private MemoryFile mem;
-    private SensorDirectChannel mSDC;
+    //private MemoryFile mem;
+    //private SensorDirectChannel mSDC;
     private File file;
 
     public LoggerModel(SensorManager sm, File f) throws IOException {
@@ -32,23 +32,30 @@ public class LoggerModel {
         file = f;
         mGyro = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
-        mem = new MemoryFile(null, 1048575);
+        //mem = new MemoryFile(null, 1048575);
 
-        mSDC = sm.createDirectChannel(mem);
+        //mSDC = sm.createDirectChannel(mem);
 
     }
 
     public void setLogging(boolean b) throws IOException {
         if(b)
         {
-            mSDC.configure(mGyro,SensorDirectChannel.RATE_NORMAL);
+            //mSDC.configure(mGyro,SensorDirectChannel.RATE_NORMAL);
             System.out.println("on");
             //return null;
         }
         else
         {
-            mSDC.configure(mGyro,SensorDirectChannel.RATE_STOP);
-            InputStream is = mem.getInputStream();
+            //mSDC.configure(mGyro,SensorDirectChannel.RATE_STOP);
+            //InputStream is = mem.getInputStream();
+            // dummy inputstream
+            InputStream is = new InputStream() {
+                @Override
+                public int read() throws IOException {
+                    return 0;
+                }
+            };
             //Path path;
             FileOutputStream fos = new FileOutputStream(file);
 
@@ -85,6 +92,6 @@ public class LoggerModel {
     }
 
     public void close(){
-        mSDC.close();
+        //mSDC.close();
     }
 }
